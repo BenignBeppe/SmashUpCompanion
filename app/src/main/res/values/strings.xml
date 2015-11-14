@@ -7,4 +7,6 @@
     <string name="increase">+</string>
     <string name="editPlayerTitle">Edit Player</string>
     <string name="playerNameLabel">Name</string>
+    <string name="fontAwesome">fonts/fontawesome-webfont.ttf</string>
+    <string name="editIcon">&#xf044;</string>
 </resources>

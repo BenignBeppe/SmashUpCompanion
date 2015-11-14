@@ -3,6 +3,7 @@ package com.github.benignbeppe.smashupcompanion;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -33,8 +34,9 @@ public class Player extends LinearLayout implements View.OnClickListener,
     protected void onFinishInflate() {
         super.onFinishInflate();
         nameView = (TextView)findViewById(R.id.playerName);
-        ImageButton editButton = (ImageButton)findViewById(R.id.edit);
+        Button editButton = (Button)findViewById(R.id.edit);
         editButton.setOnClickListener(this);
+        editButton.setTypeface(Font.fontAwesome);
         Button decreaseButton = (Button)findViewById(R.id.decrease);
         decreaseButton.setOnClickListener(this);
         Button increaseButton = (Button)findViewById(R.id.increase);
@@ -57,16 +59,7 @@ public class Player extends LinearLayout implements View.OnClickListener,
                 changePoints(points + 1);
                 break;
             case R.id.edit:
-                AlertDialog.Builder dialogBuilder =
-                        new AlertDialog.Builder(activity);
-                dialogBuilder.setTitle(R.string.editPlayerTitle);
-                dialogBuilder.setPositiveButton(android.R.string.ok, this);
-                dialogBuilder.setNegativeButton(android.R.string.cancel, this);
-                View dialogueView = View.inflate(
-                        activity, R.layout.edit_player_dialogue, null);
-                dialogBuilder.setView(dialogueView);
-                dialogBuilder.create();
-                dialogBuilder.show();
+                showEditDialogue();
                 break;
         }
     }
@@ -76,6 +69,21 @@ public class Player extends LinearLayout implements View.OnClickListener,
         pointsView.setText(String.valueOf(points));
         Log.d(getClass().getSimpleName(), "Changed points for player '" + name +
                 "' to " + points);
+    }
+
+    private void showEditDialogue() {
+        AlertDialog.Builder dialogBuilder =
+                new AlertDialog.Builder(activity);
+        dialogBuilder.setTitle(R.string.editPlayerTitle);
+        dialogBuilder.setPositiveButton(android.R.string.ok, this);
+        dialogBuilder.setNegativeButton(android.R.string.cancel, this);
+        View dialogueView = View.inflate(
+                activity, R.layout.edit_player_dialogue, null);
+        dialogBuilder.setView(dialogueView);
+        TextView nameView = (TextView)dialogueView.findViewById(R.id.name);
+        nameView.setText(name);
+        dialogBuilder.create();
+        dialogBuilder.show();
     }
 
     @Override
