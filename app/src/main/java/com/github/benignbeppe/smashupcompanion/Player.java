@@ -14,8 +14,8 @@ import org.w3c.dom.Text;
  * Created by sebastian on 2015-11-14.
  */
 public class Player extends LinearLayout implements View.OnClickListener {
-    private int points;
     private String name;
+    private int points;
     private TextView nameView;
     private Button decreaseButton;
     private Button increaseButton;
@@ -46,17 +46,26 @@ public class Player extends LinearLayout implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if(v == decreaseButton) {
-            changePoints(-1);
+            changePoints(points - 1);
         }
         else if(v == increaseButton) {
-            changePoints(1);
+            changePoints(points + 1);
         }
     }
 
-    private void changePoints(int delta) {
-        points += delta;
+    public void changePoints(int points) {
+        this.points = points;
         pointsView.setText(String.valueOf(points));
         Log.d(getClass().getSimpleName(), "Changed points for player '" + name +
-                "': " + delta);
+                "' to " + points);
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
 }

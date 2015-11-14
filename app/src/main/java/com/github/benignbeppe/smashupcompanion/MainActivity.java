@@ -21,22 +21,58 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        createPlayer("Player 1");
-        createPlayer("Player 2");
-        createPlayer("Player 3");
-        createPlayer("Player 4");
+        if(savedInstanceState == null) {
+            createPlayer("Player 1");
+            createPlayer("Player 2");
+            createPlayer("Player 3");
+            createPlayer("Player 4");
+        }
+        else {
+            ArrayList<String> playerNames =
+                    savedInstanceState.getStringArrayList("playerNames");
+            ArrayList<Integer> playerPoints =
+                    savedInstanceState.getIntegerArrayList("playerPoints");
+            for(int i = 0; i < playerNames.size(); i++) {
+                createPlayer(playerNames.get(i), playerPoints.get(i));
+            }
+        }
     }
 
-    private void createPlayer(String name) {
+    private void createPlayer(String name, int points) {
         Log.d(getClass().getSimpleName(), "Adding player: '" + name + "'");
         ViewGroup playersArea = (ViewGroup)findViewById(R.id.playersArea);
         View.inflate(this, R.layout.player, playersArea);
         Player addedPlayer = players.get(players.size() - 1);
         addedPlayer.changeName(name);
+        addedPlayer.changePoints(points);
+    }
+
+    private void createPlayer(String name) {
+        createPlayer(name, 0);
     }
 
     public void addPlayer(Player player) {
         players.add(player);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        ArrayList<String> playerNames = new ArrayList<>();
+        ArrayList<Integer> playerPoints = new ArrayList<>();
+        for(Player player: players) {
+            playerNames.add(player.getName());
+            playerPoints.add(player.getPoints());
+        }
+        outState.putStringArrayList("playerNames", playerNames);
+        outState.putIntegerArrayList("playerPoints", playerPoints);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        Log.v(getClass().getSimpleName(), "Restoring: " + savedInstanceState);
+
     }
 
     @Override
