@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">Smash Up Companion</string>
     <string name="action_settings">Settings</string>
+    <string name="playersTitle">Players</string>
+    <string name="basesTitle">Bases</string>
+    <string name="decrease">-</string>
+    <string name="increase">+</string>
+    <string name="playerNameTag">playerNameTag</string>
 </resources>

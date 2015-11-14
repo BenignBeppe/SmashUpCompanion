@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.github.benignbeppe.smashupcompanion.Player
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1">
+    <TextView
+        android:id="@+id/playerName"
+        android:tag="@string/playerNameTag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:orientation="horizontal">
+        <Button
+            android:id="@+id/decrease"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:text="@string/decrease"
+            android:background="@android:drawable/btn_default" />
+        <TextView
+            android:id="@+id/points"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:text="0"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+        <Button
+            android:id="@+id/increase"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:text="@string/increase"
+            android:background="@android:drawable/btn_default" />
+    </LinearLayout>
+</com.github.benignbeppe.smashupcompanion.Player>
