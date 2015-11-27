@@ -88,8 +88,7 @@ public class Player extends LinearLayout implements View.OnClickListener,
     @Override
     public void onClick(DialogInterface dialog, int which) {
         AlertDialog dialogue = ((AlertDialog)dialog);
-        TextView nameView = (TextView)dialogue.findViewById(
-                R.id.name);
+        TextView nameView = (TextView)dialogue.findViewById(R.id.name);
         if(which == DialogInterface.BUTTON_POSITIVE) {
             CheckBox deletePlayerCheckbox =
                 (CheckBox)dialogue.findViewById(R.id.delete);

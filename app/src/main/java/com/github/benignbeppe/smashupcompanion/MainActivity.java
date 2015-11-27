@@ -14,6 +14,8 @@ import android.widget.Button;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+    private static int MAX_PLAYERS = 4;
+
     ArrayList<Player> players;
 
     @Override
@@ -45,8 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private void createPlayer(String name, int points) {
         Log.d(getClass().getSimpleName(), "Adding player: '" + name + "'");
         ViewGroup parent;
-        if(getResources().getConfiguration().orientation ==
-                Configuration.ORIENTATION_LANDSCAPE) {
+        if(isLandscape()) {
             if(players.size() < 2) {
                 parent = (ViewGroup)findViewById(R.id.playersRow1);
             }
@@ -63,6 +64,11 @@ public class MainActivity extends AppCompatActivity {
         addedPlayer.changePoints(points);
     }
 
+    private boolean isLandscape() {
+        return getResources().getConfiguration().orientation ==
+                Configuration.ORIENTATION_LANDSCAPE;
+    }
+
     private void createPlayer() {
         String name = "Player " + (players.size() + 1);
         createPlayer(name, 0);
@@ -70,10 +76,25 @@ public class MainActivity extends AppCompatActivity {
 
     public void addPlayer(Player player) {
         players.add(player);
+        if(players.size() == MAX_PLAYERS) {
+            Button addPlayerButton = (Button)findViewById(R.id.addPlayerButton);
+            addPlayerButton.setEnabled(false);
+        }
     }
 
     public void removePlayer(Player player) {
         players.remove(player);
+        Button addPlayerButton = (Button)findViewById(R.id.addPlayerButton);
+        addPlayerButton.setEnabled(true);
+        ViewGroup firstRow = (ViewGroup)findViewById(R.id.playersRow1);
+        ViewGroup secondRow = (ViewGroup)findViewById(R.id.playersRow2);
+        if(isLandscape() &&
+                player.getParent() == firstRow &&
+                secondRow.getChildCount() > 0) {
+            View firstPlayerOnSecondRow = secondRow.getChildAt(0);
+            secondRow.removeView(firstPlayerOnSecondRow);
+            firstRow.addView(firstPlayerOnSecondRow);
+        }
     }
 
     @Override
@@ -92,8 +113,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        Log.v(getClass().getSimpleName(), "Restoring: " + savedInstanceState);
-
+        Log.d(getClass().getSimpleName(), "Restoring instance: " +
+                savedInstanceState);
     }
 
     @Override
