@@ -14,7 +14,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
-        <Button
+        <com.github.benignbeppe.smashupcompanion.AwesomeButton
             android:id="@+id/edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -27,13 +27,13 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-        <Button
+        <com.github.benignbeppe.smashupcompanion.AwesomeButton
             android:id="@+id/decrease"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:minWidth="30dp"
             android:minHeight="30dp"
-            android:text="@string/decrease" />
+            android:text="@string/subtractIcon" />
         <TextView
             android:id="@+id/points"
             android:layout_width="0dp"
@@ -42,12 +42,12 @@
             android:layout_weight="1"
             android:text="0"
             android:textAppearance="?android:attr/textAppearanceLarge" />
-        <Button
+        <com.github.benignbeppe.smashupcompanion.AwesomeButton
             android:id="@+id/increase"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:minWidth="30dp"
             android:minHeight="30dp"
-            android:text="@string/increase" />
+            android:text="@string/addIcon" />
     </LinearLayout>
 </com.github.benignbeppe.smashupcompanion.Player>

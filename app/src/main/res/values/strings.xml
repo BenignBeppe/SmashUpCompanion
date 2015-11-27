@@ -9,4 +9,6 @@
     <string name="playerNameLabel">Name</string>
     <string name="fontAwesome">fonts/fontawesome-webfont.ttf</string>
     <string name="editIcon">&#xf044;</string>
+    <string name="addIcon">&#xf067;</string>
+    <string name="subtractIcon">&#xf068;</string>
 </resources>
