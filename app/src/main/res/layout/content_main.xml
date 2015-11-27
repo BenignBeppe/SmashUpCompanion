@@ -31,12 +31,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="@string/playersTitle" />
-            <LinearLayout
-                    android:id="@+id/playersArea"
-                    android:orientation="vertical"
-                    android:layout_height="match_parent"
-                    android:layout_width="match_parent">
-            </LinearLayout>
+            <include layout="@layout/player_area" />
         </LinearLayout>
         <LinearLayout
                 android:orientation="vertical"
