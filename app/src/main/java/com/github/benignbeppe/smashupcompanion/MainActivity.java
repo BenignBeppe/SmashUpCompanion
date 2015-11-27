@@ -17,11 +17,13 @@ public class MainActivity extends AppCompatActivity {
     private static int MAX_PLAYERS = 4;
 
     ArrayList<Player> players;
+    ArrayList<Base> bases;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         players = new ArrayList<>();
+        bases = new ArrayList<>();
         Font.init(this);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -33,7 +35,12 @@ public class MainActivity extends AppCompatActivity {
                 createPlayer();
             }
         });
-        if(savedInstanceState != null) {
+        createBase();
+        if(savedInstanceState == null) {
+            createPlayer("Player 1");
+            createPlayer("Player 2");
+        }
+        else {
             ArrayList<String> playerNames =
                     savedInstanceState.getStringArrayList("playerNames");
             ArrayList<Integer> playerPoints =
@@ -41,27 +48,68 @@ public class MainActivity extends AppCompatActivity {
             for(int i = 0; i < playerNames.size(); i++) {
                 createPlayer(playerNames.get(i), playerPoints.get(i));
             }
+            ArrayList<String> baseNames =
+                    savedInstanceState.getStringArrayList("baseNames");
+            ArrayList<Integer> baseValues =
+                    savedInstanceState.getIntegerArrayList("baseValues");
+            ArrayList<Integer> baseBreakPoints =
+                    savedInstanceState.getIntegerArrayList("baseBreakPoints");
+            for(int i = 0; i < bases.size(); i ++) {
+                Base base = bases.get(i);
+                base.changeName(baseNames.get(i));
+                base.changeValue(baseValues.get(i));
+                base.changeBreakPoint(baseBreakPoints.get(i));
+            }
         }
     }
 
     private void createPlayer(String name, int points) {
-        Log.d(getClass().getSimpleName(), "Adding player: '" + name + "'");
+        Log.d(getClass().getSimpleName(), "Creating player: '" + name + "'");
         ViewGroup parent;
         if(isLandscape()) {
-            if(players.size() < 2) {
-                parent = (ViewGroup)findViewById(R.id.playersRow1);
+            if(players.size() > 1) {
+                parent = (ViewGroup)findViewById(R.id.playerRow2);
             }
             else {
-                parent = (ViewGroup)findViewById(R.id.playersRow2);
+                parent = (ViewGroup)findViewById(R.id.playerRow1);
             }
         }
         else {
-            parent = (ViewGroup)findViewById(R.id.playersArea);
+            parent = (ViewGroup)findViewById(R.id.playerArea);
         }
         View.inflate(this, R.layout.player, parent);
         Player addedPlayer = players.get(players.size() - 1);
         addedPlayer.changeName(name);
-        addedPlayer.changePoints(points);
+        addedPlayer.changeValue(points);
+        createBase();
+    }
+
+    private void createBase(String name, int value, int breakPoint) {
+        Log.d(getClass().getSimpleName(), "Creating base: '" + name + "'");
+        ViewGroup parent;
+        if(isLandscape()) {
+            if(players.size() > 3) {
+                parent = (ViewGroup)findViewById(R.id.baseRow3);
+            }
+            else if(players.size() > 1){
+                parent = (ViewGroup)findViewById(R.id.baseRow2);
+            }
+            else {
+                parent = (ViewGroup)findViewById(R.id.baseRow1);
+            }
+        }
+        else {
+            parent = (ViewGroup)findViewById(R.id.baseArea);
+        }
+        View.inflate(this, R.layout.base, parent);
+        Base addedBase = bases.get(bases.size() - 1);
+        addedBase.changeName(name);
+        addedBase.changeValue(value);
+        addedBase.changeBreakPoint(breakPoint);
+    }
+
+    private void createBase() {
+        createBase("Base " + (bases.size() + 1), 0, 0);
     }
 
     private boolean isLandscape() {
@@ -69,9 +117,13 @@ public class MainActivity extends AppCompatActivity {
                 Configuration.ORIENTATION_LANDSCAPE;
     }
 
+    private void createPlayer(String name) {
+        createPlayer(name, 0);
+    }
+
     private void createPlayer() {
         String name = "Player " + (players.size() + 1);
-        createPlayer(name, 0);
+        createPlayer(name);
     }
 
     public void addPlayer(Player player) {
@@ -82,12 +134,18 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void addBase(Base base) {
+        bases.add(base);
+    }
+
     public void removePlayer(Player player) {
+        Log.d(getClass().getSimpleName(), String.format(
+                "Removing player: '%s', %s", player.getName(), player));
         players.remove(player);
         Button addPlayerButton = (Button)findViewById(R.id.addPlayerButton);
         addPlayerButton.setEnabled(true);
-        ViewGroup firstRow = (ViewGroup)findViewById(R.id.playersRow1);
-        ViewGroup secondRow = (ViewGroup)findViewById(R.id.playersRow2);
+        ViewGroup firstRow = (ViewGroup)findViewById(R.id.playerRow1);
+        ViewGroup secondRow = (ViewGroup)findViewById(R.id.playerRow2);
         if(isLandscape() &&
                 player.getParent() == firstRow &&
                 secondRow.getChildCount() > 0) {
@@ -95,18 +153,38 @@ public class MainActivity extends AppCompatActivity {
             secondRow.removeView(firstPlayerOnSecondRow);
             firstRow.addView(firstPlayerOnSecondRow);
         }
+        removeBase();
+    }
+
+    private void removeBase() {
+        Base base = bases.get(bases.size() - 1);
+        Log.d(getClass().getSimpleName(), String.format(
+                "Removing base: '%s', %s", base.getName(), base));
+        ((ViewGroup)findViewById(R.id.baseArea)).removeView(base);
+        bases.remove(base);
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         ArrayList<String> playerNames = new ArrayList<>();
         ArrayList<Integer> playerPoints = new ArrayList<>();
+        ArrayList<String> baseNames = new ArrayList<>();
+        ArrayList<Integer> baseValues = new ArrayList<>();
+        ArrayList<Integer> baseBreakPoints = new ArrayList<>();
         for(Player player: players) {
             playerNames.add(player.getName());
-            playerPoints.add(player.getPoints());
+            playerPoints.add(player.getValue());
+        }
+        for(Base base: bases) {
+            baseNames.add(base.getName());
+            baseValues.add(base.getValue());
+            baseBreakPoints.add(base.getBreakPoint());
         }
         outState.putStringArrayList("playerNames", playerNames);
         outState.putIntegerArrayList("playerPoints", playerPoints);
+        outState.putStringArrayList("baseNames", baseNames);
+        outState.putIntegerArrayList("baseValues", baseValues);
+        outState.putIntegerArrayList("baseBreakPoints", baseBreakPoints);
         super.onSaveInstanceState(outState);
     }
 

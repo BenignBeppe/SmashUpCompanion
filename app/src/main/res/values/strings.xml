@@ -12,4 +12,7 @@
     <string name="addIcon">&#xf067;</string>
     <string name="subtractIcon">&#xf068;</string>
     <string name="deletePlayer">Delete</string>
+    <string name="editBaseTitle">Edit Base</string>
+    <string name="baseNameLabel">Name</string>
+    <string name="breakPointLabel">Break point</string>
 </resources>

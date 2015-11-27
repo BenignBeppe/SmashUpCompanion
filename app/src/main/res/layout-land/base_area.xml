@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TableLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/playerArea"
+    android:id="@+id/baseArea"
     android:orientation="vertical"
     android:layout_height="match_parent"
     android:layout_width="match_parent">
-    <TableRow android:id="@+id/playerRow1" />
-    <TableRow android:id="@+id/playerRow2" />
+    <TableRow android:id="@+id/baseRow1" />
+    <TableRow android:id="@+id/baseRow2" />
+    <TableRow android:id="@+id/baseRow3" />
 </TableLayout>
