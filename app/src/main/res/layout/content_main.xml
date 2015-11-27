@@ -35,10 +35,11 @@
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="@string/playersTitle" />
                 <com.github.benignbeppe.smashupcompanion.AwesomeButton
+                    android:id="@+id/addPlayerButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:minWidth="40dp"
-                    android:minHeight="40dp"
+                    android:minWidth="50dp"
+                    android:minHeight="50dp"
                     android:text="@string/addIcon" />
             </LinearLayout>
             <include layout="@layout/player_area" />

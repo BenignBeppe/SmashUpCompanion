@@ -1,15 +1,15 @@
 package com.github.benignbeppe.smashupcompanion;
 
-import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import java.util.ArrayList;
 
@@ -24,13 +24,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        if(savedInstanceState == null) {
-            createPlayer("Player 1");
-            createPlayer("Player 2");
-            createPlayer("Player 3");
-            createPlayer("Player 4");
-        }
-        else {
+        Button addPlayerButton = (Button)findViewById(R.id.addPlayerButton);
+        addPlayerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createPlayer();
+            }
+        });
+        if(savedInstanceState != null) {
             ArrayList<String> playerNames =
                     savedInstanceState.getStringArrayList("playerNames");
             ArrayList<Integer> playerPoints =
@@ -62,7 +63,8 @@ public class MainActivity extends AppCompatActivity {
         addedPlayer.changePoints(points);
     }
 
-    private void createPlayer(String name) {
+    private void createPlayer() {
+        String name = "Player " + (players.size() + 1);
         createPlayer(name, 0);
     }
 
