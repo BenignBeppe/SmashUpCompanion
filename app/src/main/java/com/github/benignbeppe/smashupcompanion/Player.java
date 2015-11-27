@@ -3,12 +3,12 @@ package com.github.benignbeppe.smashupcompanion;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -36,7 +36,6 @@ public class Player extends LinearLayout implements View.OnClickListener,
         nameView = (TextView)findViewById(R.id.playerName);
         Button editButton = (Button)findViewById(R.id.edit);
         editButton.setOnClickListener(this);
-        editButton.setTypeface(Font.fontAwesome);
         Button decreaseButton = (Button)findViewById(R.id.decrease);
         decreaseButton.setOnClickListener(this);
         Button increaseButton = (Button)findViewById(R.id.increase);
@@ -88,10 +87,19 @@ public class Player extends LinearLayout implements View.OnClickListener,
 
     @Override
     public void onClick(DialogInterface dialog, int which) {
-        TextView nameView = (TextView)((AlertDialog)dialog).findViewById(
+        AlertDialog dialogue = ((AlertDialog)dialog);
+        TextView nameView = (TextView)dialogue.findViewById(
                 R.id.name);
         if(which == DialogInterface.BUTTON_POSITIVE) {
-            changeName(nameView.getText().toString());
+            CheckBox deletePlayerCheckbox =
+                (CheckBox)dialogue.findViewById(R.id.delete);
+            if(deletePlayerCheckbox.isChecked()) {
+                activity.removePlayer(this);
+                ((ViewGroup)getParent()).removeView(this);
+            }
+            else {
+                changeName(nameView.getText().toString());
+            }
         }
     }
 

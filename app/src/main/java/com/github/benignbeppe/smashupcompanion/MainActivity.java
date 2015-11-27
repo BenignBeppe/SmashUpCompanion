@@ -72,6 +72,10 @@ public class MainActivity extends AppCompatActivity {
         players.add(player);
     }
 
+    public void removePlayer(Player player) {
+        players.remove(player);
+    }
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         ArrayList<String> playerNames = new ArrayList<>();

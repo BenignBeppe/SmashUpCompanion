@@ -11,4 +11,5 @@
     <string name="editIcon">&#xf044;</string>
     <string name="addIcon">&#xf067;</string>
     <string name="subtractIcon">&#xf068;</string>
+    <string name="deletePlayer">Delete</string>
 </resources>
