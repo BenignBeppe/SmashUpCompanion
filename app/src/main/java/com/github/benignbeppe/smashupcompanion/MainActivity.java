@@ -1,5 +1,7 @@
 package com.github.benignbeppe.smashupcompanion;
 
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -41,8 +43,20 @@ public class MainActivity extends AppCompatActivity {
 
     private void createPlayer(String name, int points) {
         Log.d(getClass().getSimpleName(), "Adding player: '" + name + "'");
-        ViewGroup playersArea = (ViewGroup)findViewById(R.id.playersArea);
-        View.inflate(this, R.layout.player, playersArea);
+        ViewGroup parent;
+        if(getResources().getConfiguration().orientation ==
+                Configuration.ORIENTATION_LANDSCAPE) {
+            if(players.size() < 2) {
+                parent = (ViewGroup)findViewById(R.id.playersRow1);
+            }
+            else {
+                parent = (ViewGroup)findViewById(R.id.playersRow2);
+            }
+        }
+        else {
+            parent = (ViewGroup)findViewById(R.id.playersArea);
+        }
+        View.inflate(this, R.layout.player, parent);
         Player addedPlayer = players.get(players.size() - 1);
         addedPlayer.changeName(name);
         addedPlayer.changePoints(points);

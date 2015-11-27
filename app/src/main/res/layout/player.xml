@@ -3,7 +3,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_weight="1">
     <LinearLayout
             android:layout_width="fill_parent"
@@ -25,14 +25,14 @@
     </LinearLayout>
     <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
         <Button
             android:id="@+id/decrease"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minWidth="60dp"
-            android:minHeight="60dp"
+            android:minWidth="30dp"
+            android:minHeight="30dp"
             android:text="@string/decrease" />
         <TextView
             android:id="@+id/points"
@@ -46,8 +46,8 @@
             android:id="@+id/increase"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minWidth="60dp"
-            android:minHeight="60dp"
+            android:minWidth="30dp"
+            android:minHeight="30dp"
             android:text="@string/increase" />
     </LinearLayout>
 </com.github.benignbeppe.smashupcompanion.Player>
