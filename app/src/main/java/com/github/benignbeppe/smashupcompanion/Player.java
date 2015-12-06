@@ -19,10 +19,15 @@ public class Player extends Counter {
     }
 
     @Override
-    public void changeValue(int value) {
-        if(value > this.value) {
+    public void onClick(View v) {
+        super.onClick(v);
+        if(v.getId() == R.id.increase) {
             Sound.play(activity, R.raw.point);
         }
+    }
+
+    @Override
+    public void changeValue(int value) {
         super.changeValue(value);
         valueView.setText(String.valueOf(value));
         Log.d(getClass().getSimpleName(), "Changed points for player '" + name +
