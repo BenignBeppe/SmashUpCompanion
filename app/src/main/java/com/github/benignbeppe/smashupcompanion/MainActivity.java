@@ -1,5 +1,6 @@
 package com.github.benignbeppe.smashupcompanion;
 
+import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,10 +12,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    private static int MAX_PLAYERS = 4;
+    private final static int MAX_PLAYERS = 4;
+    private final static String SESSION_FILE_NAME = "session.json";
 
     ArrayList<Player> players;
     ArrayList<Base> bases;
@@ -36,11 +45,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         createBase();
-        if(savedInstanceState == null) {
-            createPlayer("Player 1");
-            createPlayer("Player 2");
-        }
-        else {
+        if(savedInstanceState != null) {
             ArrayList<String> playerNames =
                     savedInstanceState.getStringArrayList("playerNames");
             ArrayList<Integer> playerPoints =
@@ -61,6 +66,92 @@ public class MainActivity extends AppCompatActivity {
                 base.changeBreakPoint(baseBreakPoints.get(i));
             }
         }
+        else {
+            try {
+                String sessionString = readSessionFile();
+                loadSessionFromJson(sessionString);
+            } catch(IOException | JSONException e) {
+                e.printStackTrace();
+                createPlayer("Player 1");
+                createPlayer("Player 2");
+            }
+        }
+    }
+
+    private String readSessionFile() throws IOException {
+        FileInputStream in = openFileInput(SESSION_FILE_NAME);
+        int i;
+        String sessionString = "";
+        while((i = in.read()) != -1){
+            char ch = (char)i;
+            sessionString += ch;
+        }
+        Log.d(getClass().getName(), "Read session file: " + sessionString);
+        return sessionString;
+    }
+
+    private void loadSessionFromJson(String sessionString)
+            throws JSONException {
+        JSONObject sessionJson = new JSONObject(sessionString);
+        JSONArray playersJson = sessionJson.getJSONArray("players");
+        for(int i = 0; i < playersJson.length(); i ++) {
+            JSONObject playerJson = playersJson.getJSONObject(i);
+            createPlayer(playerJson.getString("name"),
+                    playerJson.getInt("value"));
+        }
+        JSONArray basesJson = sessionJson.getJSONArray("bases");
+        for(int i = 0; i < bases.size(); i ++) {
+            JSONObject baseJson = basesJson.getJSONObject(i);
+            Base base = bases.get(i);
+            base.changeName(baseJson.getString("name"));
+            base.changeValue(baseJson.getInt("value"));
+            base.changeBreakPoint(baseJson.getInt("breakPoint"));
+        }
+        Log.d(getClass().getName(), "Loaded session: " + sessionString);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        JSONObject session = null;
+        try {
+            session = createSessionJson();
+
+        } catch(JSONException e) {
+            e.printStackTrace();
+        }
+        FileOutputStream outputStream;
+        try {
+            outputStream = openFileOutput(SESSION_FILE_NAME,
+                    Context.MODE_PRIVATE);
+            outputStream.write(session.toString().getBytes());
+            outputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Log.d(getClass().getName(), "Wrote session file: " + session);
+    }
+
+    private JSONObject createSessionJson() throws JSONException {
+        JSONObject sessionJson = new JSONObject();
+        JSONArray playersJson = new JSONArray();
+        for(Player player: players) {
+            JSONObject playerJson = new JSONObject();
+            playerJson.put("name", player.getName());
+            playerJson.put("value", player.getValue());
+            playersJson.put(playerJson);
+        }
+        sessionJson.put("players", playersJson);
+        JSONArray basesJson = new JSONArray();
+        for(Base base: bases) {
+            JSONObject baseJson = new JSONObject();
+            baseJson.put("name", base.getName());
+            baseJson.put("value", base.getValue());
+            baseJson.put("breakPoint", base.getBreakPoint());
+            basesJson.put(baseJson);
+        }
+        sessionJson.put("bases", basesJson);
+        return sessionJson;
     }
 
     private void createPlayer(String name, int points) {
