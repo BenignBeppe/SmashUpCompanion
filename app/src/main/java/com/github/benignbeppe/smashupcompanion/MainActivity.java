@@ -16,9 +16,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -79,10 +83,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private String readSessionFile() throws IOException {
-        FileInputStream in = openFileInput(SESSION_FILE_NAME);
+        BufferedInputStream in = new BufferedInputStream(
+                openFileInput(SESSION_FILE_NAME));
+        InputStreamReader reader =
+                new InputStreamReader(in, Charset.forName("utf8"));
         int i;
         String sessionString = "";
-        while((i = in.read()) != -1){
+        while((i = reader.read()) != -1){
             char ch = (char)i;
             sessionString += ch;
         }
