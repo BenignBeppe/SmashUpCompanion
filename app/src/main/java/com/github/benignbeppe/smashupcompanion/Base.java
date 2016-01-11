@@ -6,6 +6,9 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Created by sebastian on 2015-11-27.
  */
@@ -59,6 +62,14 @@ public class Base extends Counter {
     public void changeBreakPoint(int breakPoint) {
         this.breakPoint = breakPoint;
         updateValue();
+    }
+
+    public JSONObject toJson() throws JSONException {
+        JSONObject Json = new JSONObject();
+        Json.put("name", getName());
+        Json.put("value", getValue());
+        Json.put("breakPoint", getBreakPoint());
+        return Json;
     }
 
     public int getBreakPoint() {

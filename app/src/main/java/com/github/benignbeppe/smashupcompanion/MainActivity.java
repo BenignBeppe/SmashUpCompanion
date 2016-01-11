@@ -136,18 +136,13 @@ public class MainActivity extends AppCompatActivity {
         JSONObject sessionJson = new JSONObject();
         JSONArray playersJson = new JSONArray();
         for(Player player: players) {
-            JSONObject playerJson = new JSONObject();
-            playerJson.put("name", player.getName());
-            playerJson.put("value", player.getValue());
+            JSONObject playerJson = player.toJson();
             playersJson.put(playerJson);
         }
         sessionJson.put("players", playersJson);
         JSONArray basesJson = new JSONArray();
         for(Base base: bases) {
-            JSONObject baseJson = new JSONObject();
-            baseJson.put("name", base.getName());
-            baseJson.put("value", base.getValue());
-            baseJson.put("breakPoint", base.getBreakPoint());
+            JSONObject baseJson = base.toJson();
             basesJson.put(baseJson);
         }
         sessionJson.put("bases", basesJson);

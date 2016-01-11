@@ -9,6 +9,9 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Created by sebastian on 2015-11-27.
  */
@@ -62,5 +65,12 @@ public class Player extends Counter {
             TextView nameView = (TextView)dialogue.findViewById(R.id.name);
             changeName(nameView.getText().toString());
         }
+    }
+
+    public JSONObject toJson() throws JSONException {
+        JSONObject Json = new JSONObject();
+        Json.put("name", getName());
+        Json.put("value", getValue());
+        return Json;
     }
 }
